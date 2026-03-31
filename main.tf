@@ -83,6 +83,17 @@ resource "aws_dynamodb_table" "replicas" {
     type = "S"
   }
 
+  attribute {
+    name = "status"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "replicas-by-status"
+    hash_key        = "status"
+    projection_type = "ALL"
+  }
+
   tags = {
     Name    = "cdb-metadata-replicas"
     Service = "cdb-metadata"
