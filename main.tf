@@ -122,6 +122,17 @@ resource "aws_dynamodb_table" "views" {
     type = "S"
   }
 
+  attribute {
+    name = "viewId"
+    type = "S"
+  }
+  
+  global_secondary_index {
+    name            = "viewId-index"
+    hash_key        = "viewId"
+    projection_type = "ALL"
+  }
+
   tags = {
     Name    = "cdb-metadata-views"
     Service = "cdb-metadata"
