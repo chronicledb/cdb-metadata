@@ -126,7 +126,7 @@ resource "aws_dynamodb_table" "views" {
     name = "viewId"
     type = "S"
   }
-  
+
   global_secondary_index {
     name            = "viewId-index"
     hash_key        = "viewId"
@@ -135,6 +135,34 @@ resource "aws_dynamodb_table" "views" {
 
   tags = {
     Name    = "cdb-metadata-views"
+    Service = "cdb-metadata"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# associations
+# pk: replicaId  sk: viewId
+# (composite key enforces one association per replica+view pair)
+# ---------------------------------------------------------------------------
+
+resource "aws_dynamodb_table" "associations" {
+  name         = "associations"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "replicaId"
+  range_key    = "viewId"
+
+  attribute {
+    name = "replicaId"
+    type = "S"
+  }
+
+  attribute {
+    name = "viewId"
+    type = "S"
+  }
+
+  tags = {
+    Name    = "cdb-metadata-associations"
     Service = "cdb-metadata"
   }
 }
@@ -173,4 +201,12 @@ output "views_table_name" {
 
 output "views_table_arn" {
   value = aws_dynamodb_table.views.arn
+}
+
+output "associations_table_name" {
+  value = aws_dynamodb_table.associations.name
+}
+
+output "associations_table_arn" {
+  value = aws_dynamodb_table.associations.arn
 }
