@@ -101,6 +101,34 @@ resource "aws_dynamodb_table" "replicas" {
 }
 
 # ---------------------------------------------------------------------------
+# views
+# pk: userId  sk: chronicleName#viewName
+# (composite key enforces uniqueness per user + chronicle)
+# ---------------------------------------------------------------------------
+
+resource "aws_dynamodb_table" "views" {
+  name         = "views"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "userId"
+  range_key    = "chronicleNameViewName"
+
+  attribute {
+    name = "userId"
+    type = "S"
+  }
+
+  attribute {
+    name = "chronicleNameViewName"
+    type = "S"
+  }
+
+  tags = {
+    Name    = "cdb-metadata-views"
+    Service = "cdb-metadata"
+  }
+}
+
+# ---------------------------------------------------------------------------
 # Outputs — useful for other services that depend on cdb-metadata
 # ---------------------------------------------------------------------------
 
@@ -126,4 +154,12 @@ output "replicas_table_name" {
 
 output "replicas_table_arn" {
   value = aws_dynamodb_table.replicas.arn
+}
+
+output "views_table_name" {
+  value = aws_dynamodb_table.views.name
+}
+
+output "views_table_arn" {
+  value = aws_dynamodb_table.views.arn
 }
