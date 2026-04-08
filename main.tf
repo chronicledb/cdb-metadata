@@ -168,6 +168,27 @@ resource "aws_dynamodb_table" "associations" {
 }
 
 # ---------------------------------------------------------------------------
+# write_schemas
+# pk: id
+# ---------------------------------------------------------------------------
+
+resource "aws_dynamodb_table" "write_schemas" {
+  name         = "write_schemas"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  tags = {
+    Name    = "cdb-metadata-write-schemas"
+    Service = "cdb-metadata"
+  }
+}
+
+# ---------------------------------------------------------------------------
 # Outputs — useful for other services that depend on cdb-metadata
 # ---------------------------------------------------------------------------
 
@@ -209,4 +230,12 @@ output "associations_table_name" {
 
 output "associations_table_arn" {
   value = aws_dynamodb_table.associations.arn
+}
+
+output "write_schemas_table_name" {
+  value = aws_dynamodb_table.write_schemas.name
+}
+
+output "write_schemas_table_arn" {
+  value = aws_dynamodb_table.write_schemas.arn
 }
