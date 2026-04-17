@@ -182,6 +182,23 @@ resource "aws_dynamodb_table" "write_schemas" {
     type = "S"
   }
 
+  attribute {
+    name = "chronicleName"
+    type = "S"
+  }
+
+  attribute {
+    name = "userId"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "userId-chronicleName-index"
+    hash_key        = "userId"
+    range_key       = "chronicleName"
+    projection_type = "ALL"
+  }
+
   tags = {
     Name    = "cdb-metadata-write-schemas"
     Service = "cdb-metadata"
