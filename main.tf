@@ -161,6 +161,12 @@ resource "aws_dynamodb_table" "associations" {
     type = "S"
   }
 
+  global_secondary_index {
+    name            = "replicaId-index"
+    hash_key        = "replicaId"
+    projection_type = "ALL"
+  }
+
   tags = {
     Name    = "cdb-metadata-associations"
     Service = "cdb-metadata"
