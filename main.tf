@@ -123,13 +123,13 @@ resource "aws_dynamodb_table" "views" {
   }
 
   attribute {
-    name = "viewId"
+    name = "id"
     type = "S"
   }
 
   global_secondary_index {
-    name            = "viewId-index"
-    hash_key        = "viewId"
+    name            = "id-index"
+    hash_key        = "id"
     projection_type = "ALL"
   }
 
