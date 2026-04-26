@@ -148,16 +148,16 @@ resource "aws_dynamodb_table" "views" {
 resource "aws_dynamodb_table" "associations" {
   name         = "associations"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "replicaId"
-  range_key    = "viewId"
-
-  attribute {
-    name = "replicaId"
-    type = "S"
-  }
+  hash_key     = "viewId"
+  range_key    = "replicaId"
 
   attribute {
     name = "viewId"
+    type = "S"
+  }
+  
+  attribute {
+    name = "replicaId"
     type = "S"
   }
 
